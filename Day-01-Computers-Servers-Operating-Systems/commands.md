@@ -1,7 +1,10 @@
 # 🛠️ Day 1 — Linux Commands Practiced
 
+These are the Linux commands I practiced during Day 1 of my DevOps Engineering Journey.
+
 ## 👤 User & System Information
 
+```bash
 whoami
 hostname
 uname -a
