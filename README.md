@@ -38,7 +38,7 @@ This repository documents my progress, labs, projects, configurations, troublesh
 | Day | Topic | Status |
 | :---: | :--- | :---: |
 | 01 | IT Foundations, Computers, Servers & OS | ✅ |
-| 02 | Networking, Security & Encryption | ⏳ |
+| 02 | [Networking & Security Basics](Day-02-Networking-Security-Encryption/) | ✅ |
 | 03 | Cloud Computing, AWS Intro & Git/GitHub | ⏳ |
 | 04 | Linux Admin, Permissions & IAM Access | ⏳ |
 | 05 | SDLC, DevOps CI/CD & Bash Scripting | ⏳ |
@@ -76,7 +76,7 @@ devops-20-day-journey/
 ├── README.md
 │
 ├── Day-01-Computers-Servers-Operating-Systems/
-├── Day-02-Networking/
+├── Day-02-Networking-Security-Encryption/
 ├── Day-03-Cloud-Computing/
 ├── Day-04-Git-GitHub/
 ├── ...
