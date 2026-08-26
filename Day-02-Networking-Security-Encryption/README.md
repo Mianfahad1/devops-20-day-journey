@@ -868,7 +868,7 @@ The lesson kept: **verify component names against the running system, not agains
 - [x] Identified 2 real security findings
 - [x] Close the `5601` Security Group rule
 - [x] Commit this file to `devops-20-day-journey`
-- [ ] Post the Day 2 LinkedIn update
+- [x] Post the Day 2 LinkedIn update
 
 ---
 
