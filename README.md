@@ -37,9 +37,9 @@ This repository documents my progress, labs, projects, configurations, troublesh
 ## 📚 Roadmap (Mise Academy)
 | Day | Topic | Status |
 | :---: | :--- | :---: |
-| 01 | IT Foundations, Computers, Servers & OS | ✅ |
+| 01 | [IT Foundations, Computers, Servers & OS](Day-01-Computers-Servers-Operating-Systems/) | ✅ |
 | 02 | [Networking & Security Basics](Day-02-Networking-Security-Encryption/) | ✅ |
-| 03 | Cloud Computing, AWS Intro & Git/GitHub | ⏳ |
+| 03 | [Version Control (Git & GitHub)](Day-03-Git-GitHub/) | ✅ |
 | 04 | Linux Admin, Permissions & IAM Access | ⏳ |
 | 05 | SDLC, DevOps CI/CD & Bash Scripting | ⏳ |
 | 06 | AWS S3, CLI & Cloud Automation | ⏳ |
@@ -77,8 +77,7 @@ devops-20-day-journey/
 │
 ├── Day-01-Computers-Servers-Operating-Systems/
 ├── Day-02-Networking-Security-Encryption/
-├── Day-03-Cloud-Computing/
-├── Day-04-Git-GitHub/
+├── Day-03-Git-GitHub/
 ├── ...
 ├── Day-20-Final-Project/
 │
