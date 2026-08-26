@@ -872,4 +872,4 @@ The lesson kept: **verify component names against the running system, not agains
 
 ---
 
-*Day 2 of 20 · [devops-20-day-journey](https://github.com/Mianfahad1/devops-20-day-journey)*
+*Day 2 of 20 · [devops-20-day-journey](https://github.com/fahadaliseemab/devops-20-day-journey)*
