@@ -40,7 +40,8 @@ This repository documents my progress, labs, projects, configurations, troublesh
 | 01 | [IT Foundations, Computers, Servers & OS](Day-01-Computers-Servers-Operating-Systems/) | ✅ |
 | 02 | [Networking & Security Basics](Day-02-Networking-Security-Encryption/) | ✅ |
 | 03 | [Version Control (Git & GitHub)](Day-03-Git-GitHub/) | ✅ |
-| 04 | Linux Admin, Permissions & IAM Access | ⏳ |
+| 04 | [AWS Intro & Linux Administration](Day-04-AWS-Intro-Linux-Administration/) | ✅ |
+
 | 05 | SDLC, DevOps CI/CD & Bash Scripting | ⏳ |
 | 06 | AWS S3, CLI & Cloud Automation | ⏳ |
 | 07 | Docker Fundamentals & Dockerfiles | ⏳ |
