@@ -1,5 +1,9 @@
 # 🚀 20-Day DevOps Engineering Journey
 
+[![Progress](https://img.shields.io/badge/Progress-Day%204%20of%2020%20(20%25)-brightgreen?style=for-the-badge&logo=target)](https://github.com/fahadaliseemab/devops-20-day-journey)
+[![AWS](https://img.shields.io/badge/AWS-EC2%20%7C%20VPC%20%7C%20S3-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
+[![Linux](https://img.shields.io/badge/Linux-Ubuntu%2024.04%20LTS-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://ubuntu.com/)
+
 A hands-on DevOps learning and portfolio project focused on building practical, job-ready skills across cloud infrastructure, Linux, networking, automation, containers, CI/CD, observability, and security based on the **Mise Academy** curriculum.
 
 This repository documents my progress, labs, projects, configurations, troubleshooting, and practical implementations throughout a structured 20-day DevOps journey.
