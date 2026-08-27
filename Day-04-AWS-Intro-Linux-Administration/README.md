@@ -166,5 +166,9 @@ sudo whoami # Output: root
 5. **Least Privilege & Sudo**: Grant administrative privileges via group membership (`sudo` group) rather than sharing the root password directly.
 
 ---
+---
+
+### 🧭 Navigation
+| [⬅️ Day 03: Git & GitHub](../Day-03-Git-GitHub/) | [🏠 Main Roadmap](../README.md) | [Day 05: SDLC & Bash ➡️](../Day-05-SDLC-Bash-Scripting/) |
 
 
