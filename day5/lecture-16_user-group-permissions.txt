@@ -1,0 +1,73 @@
+===== LECTURE 16: Configuring User & Group Permissions =====
+Date: 2026-08-29
+
+COMMANDS EXECUTED (in order):
+
+1. whoami
+   -> ubuntu
+
+2. id
+   -> uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu),27(sudo)
+
+3. sudo adduser clouduser
+   -> Password set, details skipped
+
+4. sudo usermod -aG sudo clouduser
+   -> (Added clouduser to sudo group)
+
+5. id clouduser (AFTER sudo addition)
+   -> uid=1003(clouduser) gid=1003(clouduser) groups=1003(clouduser),27(sudo),100(users)
+
+6. grep clouduser /etc/passwd
+   -> clouduser:x:1003:1003::/home/clouduser:/bin/bash
+
+7. touch file.txt
+   -> Created empty test file
+
+8. sudo chown clouduser:clouduser file.txt
+   -> Changed owner to clouduser
+
+9. ls -l file.txt (after chown)
+   -> -rw-r--r-- 1 clouduser clouduser 0 ... file.txt
+
+10. chmod u+rwx file.txt && chmod u-w file.txt
+    -> Removed write, kept read+execute for owner
+
+11. ls -l file.txt (after chmod)
+    -> -r-xr--r-- 1 clouduser clouduser 0 ... file.txt
+
+12. sudo groupadd cloudadmin
+    -> Created cloudadmin group
+
+13. sudo adduser devuser
+    -> Created devuser with password
+
+14. sudo usermod -aG cloudadmin devuser
+    -> Added devuser to cloudadmin group
+
+15. groups devuser
+    -> devuser : devuser cloudadmin
+
+16. sudo chown :cloudadmin file.txt
+    -> Changed group ownership to cloudadmin
+
+17. chmod g+rwx file.txt && chmod g-w file.txt
+    -> Removed write, kept read+execute for group
+
+18. ls -l file.txt (after group chmod)
+    -> -r-xr-xr-- 1 clouduser cloudadmin 0 ... file.txt
+
+19. grep -i cloudadmin /etc/group
+    -> cloudadmin:x:1004:devuser
+
+20. sudo gpasswd -d clouduser cloudadmin
+    -> Removing user clouduser from group cloudadmin
+
+21. sudo userdel clouduser && sudo groupdel cloudadmin
+    -> Deleted clouduser and cloudadmin group (cleanup)
+
+KEY TAKEAWAYS:
+- usermod -aG = append user to secondary group
+- chown user:group = change both owner and group
+- chown :group = change group only
+- SGID (2xxx) was not used here, but standard group permissions were practiced

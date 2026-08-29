@@ -1,0 +1,76 @@
+===== LECTURE 17: chmod & IAM Access =====
+Date: 2026-08-29
+
+PART 1: LINUX CHMOD PRACTICE (All commands run on EC2)
+
+1. chmod 700 backup.sh
+   Command: touch backup.sh && echo "Currently, I am learning IAM user creation" > backup.sh && chmod 700 backup.sh
+   Result: -rwx------ 1 ubuntu ubuntu 43 Aug 29 04:56 backup.sh
+   Meaning: Owner (ubuntu) can read, write, execute. No access for group/others.
+
+2. chmod 755 install.sh
+   Command: touch install.sh && chmod 755 install.sh
+   Result: -rwxr-xr-x 1 ubuntu ubuntu 0 Aug 29 04:57 install.sh
+   Meaning: Owner: rwx, Group: r-x, Others: r-x (public script).
+
+3. chmod 644 config.json
+   Command: touch config.json && chmod 644 config.json
+   Result: -rw-r--r-- 1 ubuntu ubuntu 0 Aug 29 04:57 config.json
+   Meaning: Owner: rw, Group: r, Others: r (config file).
+
+4. chmod 600 private.pem
+   Command: touch private.pem && chmod 600 private.pem
+   Result: -rw------- 1 ubuntu ubuntu 0 Aug 29 04:57 private.pem
+   Meaning: Only owner can read/write (SSH private key standard).
+
+5. chmod 777 shared.log
+   Command: touch shared.log && chmod 777 shared.log
+   Result: -rwxrwxrwx 1 ubuntu ubuntu 0 Aug 29 04:57 shared.log
+   Meaning: Everyone has full access (WARNING: Not for production!).
+
+6. chmod +x script.sh
+   Command: touch script.sh && chmod +x script.sh
+   Result: -rwxr-xr-x 1 ubuntu ubuntu 0 Aug 29 04:57 script.sh
+   Meaning: Added execute permission to owner, group, others.
+
+7. chmod -x report.sh
+   Command: touch report.sh && chmod +x report.sh && chmod -x report.sh
+   Result: -rw-rw-r-- 1 ubuntu ubuntu 0 Aug 29 04:57 report.sh
+   Meaning: Removed execute permission from all.
+
+SUMMARY TABLE (Memorize these):
+| Command | Result | Use Case |
+|---------|--------|----------|
+| chmod 700 | -rwx------ | Sensitive scripts, only owner runs |
+| chmod 755 | -rwxr-xr-x | Public scripts (e.g., install.sh) |
+| chmod 644 | -rw-r--r-- | Config files (e.g., config.json) |
+| chmod 600 | -rw------- | SSH private keys (.pem) |
+| chmod 777 | -rwxrwxrwx | Temporary testing ONLY (insecure) |
+| chmod +x | Adds +x | Making any script executable |
+| chmod -x | Removes -x | Restricting execution |
+
+PART 2: AWS IAM (Console)
+
+1. Created IAM User: devops_user1
+   - Console access: Enabled
+   - Programmatic access: Enabled
+   - Password: set manually
+
+2. Created IAM Group: DevOpsReadOnly
+   - Attached Policy: AmazonEC2ReadOnlyAccess
+
+3. Added devops_user1 to DevOpsReadOnly group
+
+4. Logged in as devops_user1 via incognito:
+   - URL: https://113831246457.signin.aws.amazon.com/console
+
+5. Verified READ-ONLY access:
+   - EC2 Dashboard -> Instances: SUCCESS (can view instances)
+
+6. Verified ACCESS DENIED:
+   - Tried to "Launch instance" -> Got error:
+     "You are not authorized to perform this operation. User: arn:aws:iam::113831246457:user/devops_user1 is not authorized to perform: ec2:CreateSecurityGroup"
+   - Screenshot saved as: screenshots/iam-launch-denied.png
+
+CONCLUSION:
+Least privilege principle successfully enforced. User can view but cannot create/modify EC2 resources.
