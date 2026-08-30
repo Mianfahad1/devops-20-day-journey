@@ -97,8 +97,11 @@ This repository contains:
 
 ---
 
+
+
 ## 📂 Repository Structure
 
+```text
 devops-20-day-journey/
 │
 ├── README.md
@@ -107,18 +110,17 @@ devops-20-day-journey/
 ├── Day-02-Networking-Security-Encryption/
 ├── Day-03-Git-GitHub/
 ├── day5/
-│ ├── lecture-04-05-06-08-09-theory.md
-│ ├── lecture-16_user-group-permissions.txt
-│ └── lecture-17_chmod-practice.txt
+│   ├── lecture-04-05-06-08-09-theory.md
+│   ├── lecture-16_user-group-permissions.txt
+│   └── lecture-17_chmod-practice.txt
 ├── day6/
-│ ├── README.md
-│ └── lecture-18-23-labs.md
+│   ├── README.md
+│   └── lecture-18-23-labs.md
 ├── ...
 ├── Day-20-Final-Project/
 │
 └── projects/
-
-
+```
 
 ---
 
