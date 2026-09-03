@@ -1,7 +1,8 @@
 # 🚀 20-Day DevOps Engineering Journey
 
-**Progress:** 24 / 117 lectures completed (20.5%)  
-**Latest Update:** Day 6 — Linux Administration, Storage & Networking Mastery ✅
+**Progress:** 34 / 117 lectures completed (29%)  
+**Days Completed:** 8 / 20 (40% of days — the progress % above is lecture-weighted)  
+**Latest Update:** Day 8 — AWS S3, CLI & Cloud Automation ✅
 
 ---
 
@@ -55,20 +56,20 @@ This repository documents my progress, labs, projects, configurations, troublesh
 | 04 | AWS Intro & Linux Administration | ✅ Complete |
 | 05 | SDLC, DevOps CI/CD, Permissions & IAM | ✅ Complete |
 | 06 | Linux Admin II, EBS, Logs, Networking & UFW | ✅ Complete |
-| 07 | Text Processing (AWK, SED, GREP, CUT) | ⏳ Upcoming |
-| 08 | AWS S3, CLI & Cloud Automation | ⏳ Upcoming |
-| 09 | Docker Fundamentals & Dockerfiles | ⏳ Upcoming |
-| 10 | Advanced Docker, Compose & AWS ECS/ECR | ⏳ Upcoming |
-| 11 | Jenkins CI/CD Fundamentals & Declarative Pipelines | ⏳ Upcoming |
-| 12 | Enterprise Jenkins, Agents & Shared Libraries | ⏳ Upcoming |
-| 13 | AWS VPC, Subnets, Load Balancers & Auto Scaling | ⏳ Upcoming |
-| 14 | Ansible Configuration Management & Vault | ⏳ Upcoming |
-| 15 | Ansible + Jenkins Integration | ⏳ Upcoming |
-| 16 | Kubernetes Fundamentals & Deployments | ⏳ Upcoming |
-| 17 | Advanced K8s (StatefulSets, Volumes, Ingress, RBAC) | ⏳ Upcoming |
-| 18 | K8s GitOps with Helm, ArgoCD & AWS EKS | ⏳ Upcoming |
-| 19 | Terraform Basics & EC2 Provisioning | ⏳ Upcoming |
-| 20 | Terraform IAM, S3, DynamoDB & RDS | ⏳ Upcoming |
+| 07 | Text Processing (AWK, SED, GREP, CUT) | ✅ Complete |
+| 08 | AWS S3, CLI & Cloud Automation | ✅ Complete |
+| 09 | Bash Scripting & Automation (Advanced) | ⏳ Upcoming |
+| 10 | Docker Fundamentals & Dockerfiles | ⏳ Upcoming |
+| 11 | Advanced Docker, Compose & AWS ECS/ECR | ⏳ Upcoming |
+| 12 | Jenkins CI/CD Fundamentals & Declarative Pipelines | ⏳ Upcoming |
+| 13 | Enterprise Jenkins, Agents & Shared Libraries | ⏳ Upcoming |
+| 14 | AWS VPC, Subnets, Load Balancers & Auto Scaling | ⏳ Upcoming |
+| 15 | Ansible Configuration Management & Vault | ⏳ Upcoming |
+| 16 | Ansible + Jenkins Integration | ⏳ Upcoming |
+| 17 | Kubernetes Fundamentals & Deployments | ⏳ Upcoming |
+| 18 | Advanced K8s (StatefulSets, Volumes, Ingress, RBAC) | ⏳ Upcoming |
+| 19 | K8s GitOps with Helm, ArgoCD & AWS EKS | ⏳ Upcoming |
+| 20 | Terraform Basics & EC2 Provisioning | ⏳ Upcoming |
 
 ---
 
@@ -76,9 +77,9 @@ This repository documents my progress, labs, projects, configurations, troublesh
 
 | Metric | Value |
 |--------|-------|
-| **Lectures Completed** | 24 / 117 |
-| **Progress** | 20.5% |
-| **Days Completed** | 6 / 20 |
+| **Lectures Completed** | 34 / 117 |
+| **Progress** | 29% (lecture-weighted) |
+| **Days Completed** | 8 / 20 |
 
 ---
 
@@ -97,8 +98,6 @@ This repository contains:
 
 ---
 
-
-
 ## 📂 Repository Structure
 
 ```text
@@ -109,6 +108,7 @@ devops-20-day-journey/
 ├── Day-01-Computers-Servers-Operating-Systems/
 ├── Day-02-Networking-Security-Encryption/
 ├── Day-03-Git-GitHub/
+├── Day-04-AWS-Intro-Linux-Administration/
 ├── day5/
 │   ├── lecture-04-05-06-08-09-theory.md
 │   ├── lecture-16_user-group-permissions.txt
@@ -116,6 +116,10 @@ devops-20-day-journey/
 ├── day6/
 │   ├── README.md
 │   └── lecture-18-23-labs.md
+├── day7/
+│   └── lecture-24-28-labs.md
+├── day8/
+│   └── README.md
 ├── ...
 ├── Day-20-Final-Project/
 │
@@ -134,9 +138,11 @@ devops-20-day-journey/
 | 04 | AWS EC2, Linux Basic Commands, Web App Deployment |
 | 05 | Linux Permissions (`chmod`), User/Group Management, IAM, SDLC, CI/CD Theory |
 | 06 | EBS Persistent Storage, UFW Firewall, `logrotate`, Networking Commands, System Monitoring |
+| 07 | Text Processing — `awk`, `sed`, `grep`, `cut`, `find`/`locate` + SSH Log Security Incident Response |
+| 08 | AWS CLI, S3 Bucket Policies, IAM Roles for EC2 (Least Privilege), Bash EC2 Automation, EventBridge Scheduler |
 
 ---
 
 **Prepared by:** Fahad Ali Seemab  
 **Course:** 20-Day DevOps Engineering Journey (Mise Academy)  
-**Last Updated:** 2026-08-29
+**Last Updated:** 2026-09-03
