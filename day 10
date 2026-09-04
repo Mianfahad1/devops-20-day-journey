@@ -1,0 +1,342 @@
+# Day 10 — Docker: Fundamentals, Dockerfiles & Multi-Container Deployments
+
+**Status:** ✅ Complete
+**Platform:** AWS EC2 (Ubuntu 22.04 LTS)
+**Labs:** Classes 39–49 (11 hands-on labs)
+
+---
+
+Today was the full Docker track: from installing the Docker Engine and running my first container, to writing Dockerfiles for Flask/Django/Node apps, pushing images to Docker Hub, GitHub Container Registry (GHCR) and AWS ECR, persisting data with volumes, connecting containers with custom bridge networks, optimizing images with multi-stage builds, hardening containers for production, and finally orchestrating a complete three-tier MERN stack with Docker Compose.
+
+---
+
+## 🧪 Labs Completed
+
+| # | Lab | Stack | Key Concept | Port | Registry |
+|---|-----|-------|-------------|------|----------|
+| 1 | Docker Fundamentals — NGINX lifecycle | nginx | Install, run, logs, stop/rm, Docker architecture | 8080 | Docker Hub (official image) |
+| 2 | Dockerizing a Flask App | Flask | First Dockerfile, build → tag → push | 8000 | Docker Hub |
+| 3 | Dockerizing a Django App | Django Notes App | Dockerfile, migrations, push | 8000 | Docker Hub |
+| 4 | Two-Tier App (Manual Deploy) | Flask + MySQL | Client/server tiers, DB config, `.env` secrets | 5000 | — |
+| 5 | Docker Volumes | Django TODO App | Named volumes, data persistence test | 8000 | GHCR |
+| 6 | Docker Networks | Flask + MySQL | Custom bridge network, DNS by container name | 5000 / 3306 | Docker Hub + GHCR |
+| 7 | Multi-Stage Build | Django Notes App | Builder vs final stage, image size reduction | 8000 | AWS ECR |
+| 8 | Secure Dockerfile + Secure Runtime | Django Notes App (gunicorn) | Non-root user, `--cap-drop=ALL`, read-only FS | 8000 | AWS ECR |
+| 9 | Three-Tier App + Compose Intro | React + Node + MongoDB | YAML, microservices, Compose basics | 3000 / 5000 / 27017 | — |
+| 10 | Docker Compose — MERN Stack | React + Node + MongoDB | Services, `depends_on`, named volumes, `env_file` | 3000 / 5000 / 27017 | — |
+| 11 | Secure Compose Deployment | MERN Stack (hardened) | Multi-stage Alpine builds, healthchecks, `read_only` | 3000 / 5000 / 27017 | — |
+
+---
+
+## 🏗️ Architecture
+
+### Two-Tier (Flask + MySQL in separate containers on a custom bridge network)
+
+```text
+                Host (AWS EC2)
+┌──────────────────────────────────────────────┐
+│  ┌─────────────────┐        ┌─────────────┐  │
+│  │  flaskapp :5000 │───────►│ mysql :3306 │  │
+│  └─────────────────┘        └─────────────┘  │
+│            flask-net (user-defined bridge)   │
+└──────────────────────────────────────────────┘
+        ▲
+        │ :5000
+     Browser
+```
+
+The Flask app reaches the database by container name (`mysql`) — Docker's internal DNS resolves it inside the user-defined network. No IPs hardcoded.
+
+### Three-Tier MERN (Docker Compose)
+
+```text
+                Host (AWS EC2)
+┌───────────────────────────────────────────────────────┐
+│  ┌──────────────┐   ┌──────────────┐   ┌───────────┐  │
+│  │ frontend:3000│──►│ backend:5000 │──►│ mongo:27017│ │
+│  │  (React)     │   │  (Node API)  │   │ (MongoDB)  │ │
+│  └──────────────┘   └──────────────┘   └───────────┘  │
+│              app-network (bridge)                      │
+│                       mongo-data (named volume) ──────┘
+└───────────────────────────────────────────────────────┘
+        ▲               ▲
+        │ :3000         │ :5000 (API)
+     Browser         curl / clients
+```
+
+---
+
+## 📦 Dockerfiles I Wrote
+
+### Flask App (Class 40)
+
+```dockerfile
+# Use lightweight Python image
+FROM python:3.10-slim
+# Set working directory
+WORKDIR /app
+# Copy files
+COPY . .
+# Install dependencies
+RUN pip install -r requirements.txt
+# Expose port
+EXPOSE 8000
+# Run the app
+CMD ["python", "app.py"]
+```
+
+### Django Notes App (Class 41)
+
+```dockerfile
+FROM python:3.10-slim
+WORKDIR /app
+COPY . .
+RUN pip install -r requirements.txt
+RUN python manage.py migrate
+EXPOSE 8000
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+```
+
+### Multi-Stage Build (Class 45)
+
+Builder stage installs dependencies into `/install`; the final image copies **only** that directory — no pip cache, no build tools.
+
+```dockerfile
+# Stage 1: Builder
+FROM python:3.10-slim AS builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --upgrade pip \
+ && pip install --prefix=/install -r requirements.txt
+
+# Stage 2: Final image — clean and production-ready
+FROM python:3.10-slim
+WORKDIR /app
+ENV PYTHONUNBUFFERED=1
+COPY --from=builder /install /usr/local
+COPY . .
+EXPOSE 8000
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+```
+
+**Builder image = kitchen (prep work, then discarded). Final image = the plate served to the customer.**
+
+### Secure Dockerfile (Class 46)
+
+Multi-stage + non-root user + gunicorn instead of the dev server:
+
+```dockerfile
+# Stage 1: Builder
+FROM python:3.10-slim AS builder
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      gcc libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+COPY requirements.txt .
+RUN pip install --no-cache-dir --target=/install -r requirements.txt
+
+# Stage 2: Final image
+FROM python:3.10-slim
+RUN adduser --disabled-password --gecos '' appuser
+WORKDIR /app
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONPATH="/install" \
+    PATH="/install/bin:$PATH"
+COPY --from=builder /install /install
+COPY . .
+RUN chown -R appuser:appuser /app
+USER appuser
+EXPOSE 8000
+CMD ["gunicorn", "notesapp.wsgi:application", "--bind", "0.0.0.0:8000"]
+```
+
+### MERN Backend — Multi-Stage Alpine + Non-Root (Class 49)
+
+```dockerfile
+# Stage 1: Builder
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+
+# Stage 2: Production
+FROM node:18-alpine
+RUN adduser -S appuser
+WORKDIR /app
+COPY --from=builder /app .
+USER appuser
+EXPOSE 5000
+CMD ["node", "server.js"]
+```
+
+---
+
+## 🐳 Docker Compose Files
+
+### MERN Three-Tier (Class 48)
+
+```yaml
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:
+```
+
+### Hardened Compose (Class 49) — non-root, read-only FS, healthchecks, private network
+
+```yaml
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    env_file:
+      - ./backend/.env
+    user: "1000:1000"
+    read_only: true
+    restart: always
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    env_file:
+      - ./frontend/.env
+    user: "1000:1000"
+    read_only: true
+    restart: always
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mongo:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+    networks:
+      - app-network
+    healthcheck:
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:
+    driver: bridge
+```
+
+---
+
+## 🔐 Secure Runtime (Class 46) — `docker run` Hardening
+
+```bash
+docker run -d \
+  --name notes-app \
+  --restart unless-stopped \
+  --user 1000:1000 \
+  --read-only \
+  --tmpfs /tmp \
+  --cap-drop=ALL \
+  --security-opt no-new-privileges \
+  --memory=512m \
+  --cpus=1.0 \
+  -p 8000:8000 \
+  -v "$(pwd)/logs:/app/logs:rw" \
+  --health-cmd="curl -f http://localhost:8000/health || exit 1" \
+  --health-interval=30s \
+  --health-retries=3 \
+  --health-start-period=10s \
+  django-notes-app:latest
+```
+
+| Flag | Why |
+|------|-----|
+| `--user 1000:1000` | Avoids root; reduces attack surface |
+| `--read-only` | Immutable filesystem; writes go to explicit volumes/tmpfs only |
+| `--cap-drop=ALL` | Removes all Linux capabilities |
+| `--security-opt no-new-privileges` | Blocks privilege escalation (setuid) |
+| `--memory` / `--cpus` | Resource limits; prevents abuse & noisy neighbors |
+| `--restart unless-stopped` | Auto-restart on crash or host reboot |
+| `--health-*` | Traffic only routes to healthy containers |
+
+---
+
+## 📚 Key Concepts I Learned
+
+- **Image vs Container** — an image is a read-only template; a container is a running instance of it.
+- **Docker architecture** — Docker CLI (client) → REST API → Docker Daemon (builds & runs containers); Docker Hub is the public registry.
+- **Volume types** — *named* (Docker-managed, persistent), *anonymous* (temporary), *bind mount* (host directory mapped in for live sync). Proved persistence by stopping/removing the container and re-running with the same volume — data survived.
+- **Network types** — *bridge* (default, single host), *host* (shares host stack), *none* (isolated), *overlay* (multi-host/Swarm). On user-defined bridge networks containers reach each other **by name** via Docker DNS — verified with `ping mysql` from inside a container.
+- **Multi-stage builds** — separate build environment from runtime: smaller images, faster deploys, smaller attack surface. Unlimited stages allowed (build, test, scan, ship).
+- **Container hardening** — non-root `USER`, `--cap-drop=ALL`, `--read-only` + `--tmpfs`, `no-new-privileges`, resource limits, healthchecks; plus `.dockerignore` (`.env`, `__pycache__`, `.git`) and image scanning (Trivy/Dockle) as next steps.
+- **Registries** — pushed the same app concepts to three registries: Docker Hub (`docker login` + tag + push), GHCR (GitHub PAT, `ghcr.io/<owner>/<image>`), and AWS ECR (`aws ecr get-login-password` piped to `docker login`).
+- **Why Compose** — one YAML file defines the whole multi-service stack (build contexts, ports, volumes, env files, dependencies, healthchecks); `docker compose up -d` replaces a dozen long `docker run` commands.
+
+---
+
+## 📁 Repos & Images Used in Labs
+
+- `github.com/Umair1012/Flask-Based-Python-Application-on-AWS-EC2-with-Docker` (Flask)
+- `github.com/Umair1012/django-notes-app` (Django / multistage / secure)
+- `github.com/Umair1012/two-tier-flask-app` (two-tier, Flask + MySQL)
+- `github.com/Umair1012/django-todo` (volumes)
+- `github.com/Umair1012/three-tier-app` (three-tier MERN, Compose)
+
+Full command reference for every lab: **[commands.md](commands.md)**
+
+---
+
+**Prepared by:** Fahad Ali Seemab
+**Course:** 20-Day DevOps Engineering Journey (Mise Academy)
+**Date:** 2026-09-04
