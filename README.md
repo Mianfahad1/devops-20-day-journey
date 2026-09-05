@@ -2,7 +2,7 @@
 
 **Progress:** 45 / 117 lectures completed (38%)
 **Days Completed:** 10 / 20 (50% of days — the progress % above is lecture-weighted)
-**Latest Update:** Day 10 — Docker Fundamentals & Dockerfiles ✅
+**Latest Update:** Day 10 — Docker Fundamentals, Dockerfiles & Secure Compose ✅
 
 ---
 
@@ -126,7 +126,6 @@ devops-20-day-journey/
 ├── Day10-Docker/
 │   ├── README.md
 │   └── commands.md
-├── commands.md
 ├── ...
 ├── Day-20-Final-Project/
 │
@@ -154,4 +153,4 @@ devops-20-day-journey/
 
 **Prepared by:** Fahad Ali Seemab  
 **Course:** 20-Day DevOps Engineering Journey (Mise Academy)  
-**Last Updated:** 2026-09-04
+**Last Updated:** 2026-09-05
