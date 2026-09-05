@@ -123,7 +123,7 @@ devops-20-day-journey/
 ├── Day9-Bash-Scripting/
 │   ├── README.md
 │   └── command.md
-├── day 10
+├── day10.md
 ├── commands.md
 ├── ...
 ├── Day-20-Final-Project/
