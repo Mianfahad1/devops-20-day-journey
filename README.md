@@ -1,8 +1,8 @@
 # 🚀 20-Day DevOps Engineering Journey
 
-**Progress:** 34 / 117 lectures completed (29%)  
-**Days Completed:** 8 / 20 (40% of days — the progress % above is lecture-weighted)  
-**Latest Update:** Day 8 — AWS S3, CLI & Cloud Automation ✅
+**Progress:** 45 / 117 lectures completed (38%)
+**Days Completed:** 10 / 20 (50% of days — the progress % above is lecture-weighted)
+**Latest Update:** Day 10 — Docker Fundamentals & Dockerfiles ✅
 
 ---
 
@@ -58,8 +58,8 @@ This repository documents my progress, labs, projects, configurations, troublesh
 | 06 | Linux Admin II, EBS, Logs, Networking & UFW | ✅ Complete |
 | 07 | Text Processing (AWK, SED, GREP, CUT) | ✅ Complete |
 | 08 | AWS S3, CLI & Cloud Automation | ✅ Complete |
-| 09 | Bash Scripting & Automation (Advanced) | ⏳ Upcoming |
-| 10 | Docker Fundamentals & Dockerfiles | ⏳ Upcoming |
+| 09 | Bash Scripting & Automation (Advanced) | ✅ Complete |
+| 10 | Docker Fundamentals & Dockerfiles | ✅ Complete |
 | 11 | Advanced Docker, Compose & AWS ECS/ECR | ⏳ Upcoming |
 | 12 | Jenkins CI/CD Fundamentals & Declarative Pipelines | ⏳ Upcoming |
 | 13 | Enterprise Jenkins, Agents & Shared Libraries | ⏳ Upcoming |
@@ -77,9 +77,9 @@ This repository documents my progress, labs, projects, configurations, troublesh
 
 | Metric | Value |
 |--------|-------|
-| **Lectures Completed** | 34 / 117 |
-| **Progress** | 29% (lecture-weighted) |
-| **Days Completed** | 8 / 20 |
+| **Lectures Completed** | 45 / 117 |
+| **Progress** | 38% (lecture-weighted) |
+| **Days Completed** | 10 / 20 |
 
 ---
 
@@ -120,6 +120,11 @@ devops-20-day-journey/
 │   └── lecture-24-28-labs.md
 ├── day8/
 │   └── README.md
+├── Day9-Bash-Scripting/
+│   ├── README.md
+│   └── command.md
+├── day 10
+├── commands.md
 ├── ...
 ├── Day-20-Final-Project/
 │
@@ -140,9 +145,11 @@ devops-20-day-journey/
 | 06 | EBS Persistent Storage, UFW Firewall, `logrotate`, Networking Commands, System Monitoring |
 | 07 | Text Processing — `awk`, `sed`, `grep`, `cut`, `find`/`locate` + SSH Log Security Incident Response |
 | 08 | AWS CLI, S3 Bucket Policies, IAM Roles for EC2 (Least Privilege), Bash EC2 Automation, EventBridge Scheduler |
+| 09 | Bash scripting, conditionals, loops, functions, arguments and cloud automation |
+| 10 | Docker images, Dockerfiles, volumes, networks, Compose and container hardening |
 
 ---
 
 **Prepared by:** Fahad Ali Seemab  
 **Course:** 20-Day DevOps Engineering Journey (Mise Academy)  
-**Last Updated:** 2026-09-03
+**Last Updated:** 2026-09-04

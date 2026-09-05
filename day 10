@@ -92,9 +92,8 @@ FROM python:3.10-slim
 WORKDIR /app
 COPY . .
 RUN pip install -r requirements.txt
-RUN python manage.py migrate
 EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
 ```
 
 ### Multi-Stage Build (Class 45)
@@ -116,7 +115,7 @@ ENV PYTHONUNBUFFERED=1
 COPY --from=builder /install /usr/local
 COPY . .
 EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
 ```
 
 **Builder image = kitchen (prep work, then discarded). Final image = the plate served to the customer.**
@@ -230,7 +229,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5000/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -249,7 +248,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -264,6 +263,7 @@ services:
     networks:
       - app-network
     healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -293,7 +293,7 @@ docker run -d \
   --cpus=1.0 \
   -p 8000:8000 \
   -v "$(pwd)/logs:/app/logs:rw" \
-  --health-cmd="curl -f http://localhost:8000/health || exit 1" \
+  --health-cmd='python -c "import urllib.request; urllib.request.urlopen(\"http://localhost:8000/health\")"' \
   --health-interval=30s \
   --health-retries=3 \
   --health-start-period=10s \
